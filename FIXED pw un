@@ -1,0 +1,32 @@
+def security():
+    print("Welcome")
+    o = open("Username.txt","r")
+    Username = o.readline()
+    o = open("Password.txt","r")
+    Password = o.readline()
+
+    flag = True
+    count = 0
+
+    while flag == True:
+        if count < 3:
+            print("Please login")
+            User = str(input("Please enter your username: "))
+            pw = getpass.getpass("Please enter your password: ")
+
+            if Username == User and Password == pw:
+                print("Your logged in!")
+                flag = False
+                menu()
+       
+            else:
+                print("Incorrect username or password")
+                if count < 2:
+                    print("Please try again")
+                    count = count + 1
+                else:
+                    print("Sorry you have been locked out!")
+                    flag = False
+
+
+security()
