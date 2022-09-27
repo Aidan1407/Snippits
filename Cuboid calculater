@@ -1,0 +1,28 @@
+from guizero import *
+
+
+def calc():
+        if depth.value == "":        
+            area = int( height.value ) * int( width.value )
+            result.value = str(area) + "cm squared"
+        else:
+            volume = area * int(depth.value)
+            result.value = str(volume) + "cm cubed"
+        
+app = App("Area and Volume calculator", layout="grid")
+
+width_text = Text(app, text="Width:", grid=[0,0], align="left")
+width = TextBox(app, grid=[1,0], align="left", width=20)
+
+height_text = Text(app, text="Height:", grid=[0,1], align="left")
+height = TextBox(app, grid=[1,1], align="left", width=20)
+
+depth_text = Text(app, text="Depth:", grid=[0,2], align="left")
+depth = TextBox(app, grid=[1,2], align="left", width=20)
+
+button = PushButton(app, calc, text="Calculate", grid=[1,3])
+
+result_text = Text(app, text="Result:", grid=[0,4], align="left")
+result = TextBox(app, grid=[1,4], align="left", width=30)
+
+app.display()
