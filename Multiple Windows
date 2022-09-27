@@ -1,0 +1,27 @@
+
+from guizero import *
+
+def open_window():
+    window.show(wait = True)
+
+def close_window():
+    window.hide()
+
+def exit_app():
+    app.destroy()
+
+app = App(title="Main window")
+app.bg = "blue"
+
+
+window = Window(app, title="Second window")
+window.bg = "red"
+window.hide()
+
+open_button = PushButton(app, text="Open", command=open_window)
+close_button = PushButton(window, text="Close", command=close_window)
+exit_button = PushButton(app, text = "Exit", command=exit_app) 
+
+
+
+app.display()
