@@ -1,0 +1,60 @@
+
+# TickTacToe.py  
+from guizero import * 
+
+empty = '  '
+
+player = "X" 
+
+def clicked(z):
+
+    button = buttonlist[int(z)] # Get the PushButton which was clicked
+
+    global empty, player
+
+    if button.text != empty:
+
+        pass # Do nothing if button already occupied
+
+    else:
+
+        # Mark button with user's symbol
+
+        button.text = player
+
+        # Now switch players
+
+        if player == "X":
+
+            player = "O"
+
+        else:
+
+            player = "X"
+
+    return 
+
+app = App(title="Tic Tac Toe", layout="grid", width=500, height=500)
+
+buttonlist = [] #Empty list to contain a list of PushButton objects 
+
+
+def checkWin():
+    for x in range(9):
+        print(buttonlist[x].text)
+
+
+
+#Create nine PushButtons, in three rows of three
+
+for y in range(3):
+
+    for x in range(3):
+
+        z = (3*y) + x
+
+        buttonlist.append(PushButton(app, text=empty,args=str(z), grid=[y, x], command=clicked))
+
+   
+
+app.display()
