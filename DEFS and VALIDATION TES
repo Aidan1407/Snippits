@@ -1,0 +1,87 @@
+def back():
+	window_L.hide()
+	window_S.hide()
+	window_R.hide()
+	app.show()
+
+def open_window_L():
+    window_L.show(wait = True)
+
+def open_window_S():
+    window_S.show(wait = True)
+
+def open_window_R():
+    window_R.show(wait = True)
+
+def Review():
+	window_L.hide()
+	window_R.show()
+
+def back_review():
+	window_L.show()
+	window_R.hide()
+#
+# login sql
+#
+def Review_S():
+	window_S.hide()
+	window_R.show()
+
+def review_submit():
+	if user_textbox.value == " ":
+		info("Error", "Review could not be submitted")
+	else:
+		info("Log in","Review has been submitted")
+		mysqlinsert = ("INSERT INTO REVIEW_TABLE(reviewWriteup) VALUES ('" + str(review_textbox.value) +"','" + str(user_LoggedIn.value)+ "')")
+		execute_sql(database_file, mysqlinsert)
+		Review_S()
+
+
+
+
+
+def sign_in():
+	if user_textbox.value == " ":
+		info("Error", "couldnt sign up")
+	else:
+		info("Log in","user created")
+
+
+def valid():
+	if UN_sign_textbox.value == "":
+		info('Error!','Please enter a Username') 
+	elif PW_sign_textbox.value == '':
+		info('Error!','Please enter a Password')
+	elif FN_sign_textbox.value == "":
+		info('Error!','Please enter your First Name')
+	elif SN_sign_textbox.value == "":
+		info('Error!','Please enter your Surname')
+	elif EM_sign_textbox.value == "":
+		info('Error!','Please enter an Email')
+	else:
+		info('Thank you!','You are now signed up')
+		mysqlinsert = ("INSERT INTO CUSTOMER_DETAILS(userName, userPassword,userFirstname, userlastname, email) VALUES ('"+ str(UN_sign_textbox.value) + "','" + str(PW_sign_textbox.value) + "','" + str(FN_sign_textbox.value) + "','" + str(SN_sign_textbox.value) + "','" + str(EM_sign_textbox.value) + "')")
+		execute_sql(database_file, mysqlinsert)
+		Review_S()
+
+
+
+
+def login_user():  
+	global user_LoggedIn 
+	if user_textbox.value == " ":
+		info("Error", "You must enter a valid username")
+		
+	elif PW_textbox.value == " ":
+		info("Error", "You must enter a password")
+	else:
+		usern = user_textbox.value
+		sqlselect = "SELECT * FROM CUSTOMER_DETAILS WHERE userName = '"+usern+"'"
+		rows = query_database(database_file, sqlselect)
+		if len(rows) == 0: ### This checks that the user was found ###
+			info("Error","Error user not registered")
+		else:
+			info("Log in","Success user has been found")
+			user_LoggedIn = rows[0][0]
+			window_L.hide()
+			window_R.show()
