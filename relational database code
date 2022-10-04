@@ -1,0 +1,278 @@
+
+from guizero import App, Window, PushButton, Text, CheckBox, ListBox, TextBox, ButtonGroup, Picture, Combo, Box,info  #window is second form
+#
+# https://lawsie.github.io/guizero/app/
+#
+#This is needed for the sql database
+import sqlite3
+from sqlite3 import Error
+#Import SQL
+import os
+import os.path
+#Import datetime
+import datetime
+#
+#
+#Define the DDL SQL to make the tables
+#
+#
+#Tables created in database with the following details below
+sql = """
+CREATE TABLE "CUSTOMER_DETAILS" ( 
+"customerID" INTEGER NOT NULL,
+"userName" TEXT,
+"userPassword" TEXT,
+"userFirstname" TEXT,
+"userlastname" TEXT,
+"email" TEXT, 
+PRIMARY KEY("customerID" AUTOINCREMENT)
+);
+CREATE TABLE "REVIEW_TABLE" (
+"reviewID"  INTEGER NOT NULL,
+"reviewWriteup" TEXT,
+"customerID"  INTEGER,
+PRIMARY KEY("reviewID" AUTOINCREMENT),
+CONSTRAINT "customerID_FK"  FOREIGN KEY("customerID") REFERENCES "CUSTOMER_DETAILS"("customerID")
+);
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjosht','password', 'Josh', 'Tice','Josh.t@gmail.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('useraidanc','pass', 'Aidan', 'Channing', 'Aidan@yahoo.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjackb','passwrd', 'Jack', 'Bruce', 'jack@outlook.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjoshp','parker', 'Josh', 'Parkinsons', 'joshp@gmail.com');
+insert into REVIEW_TABLE (reviewID, reviewWriteup, customerID) values ('1', 'Josh','1');
+"""
+#
+#Global variables here
+#
+#
+database_file = 'TescoApp.db'
+user_LoggedIn = 1
+#
+#
+#
+#Delete the database, only if it exists
+#
+#
+if os.path.exists(database_file):
+   os.remove(database_file)
+#
+#Connect to the database
+conn = sqlite3.connect(database_file) #My connection is called 'conn'
+#Get a cursor pointing to the database
+cursor = conn.cursor()
+#Create the tables
+cursor.executescript(sql) # creates from DDL above, script more than 1 command
+#Commit to save everything
+conn.commit()
+#Close the connection to the database
+#
+#Queries the database using the database parameter as the database
+#to query and the query parameter as the actual query to issue
+# for SELECT
+#
+def query_database(database, query):
+	Lconn = sqlite3.connect(database)
+	cur = Lconn.cursor()			# use a local cursor
+	cur.execute(query)
+	rows = cur.fetchall()
+	cur.close()
+	return rows
+#
+#
+#Executes the sql statement to INSERT and UPDATE rows
+#
+def execute_sql(database, sql_statement):
+	Lconn = sqlite3.connect(database)
+	cur = Lconn.cursor()
+	cur.execute(sql_statement)
+	Lconn.commit()
+	return cur.lastrowid
+#
+def back():
+	window_L.hide()
+	window_S.hide()
+	window_R.hide()
+	app.show()
+
+def open_window_L():
+    window_L.show(wait = True)
+
+def open_window_S():
+    window_S.show(wait = True)
+
+def open_window_R():
+    window_R.show(wait = True)
+
+def Review():
+	window_L.hide()
+	window_R.show()
+
+def back_review():
+	window_L.show()
+	window_R.hide()
+#
+# login sql
+#
+def Review_S():
+	window_S.hide()
+	window_R.show()
+
+def review_submit():
+	if user_textbox.value == " ":
+		info("Error", "Review could not be submitted")
+	else:
+		info("Log in","Review has been submitted")
+		mysqlinsert = ("INSERT INTO REVIEW_TABLE(reviewWriteup) VALUES ('" + str(review_textbox.value) +"','" + str(user_LoggedIn.value)+ "')")
+		execute_sql(database_file, mysqlinsert)
+		Review_S()
+
+
+
+
+
+def sign_in():
+	if user_textbox.value == " ":
+		info("Error", "couldnt sign up")
+	else:
+		info("Log in","user created")
+
+
+def valid():
+	if UN_sign_textbox.value == "":
+		info('Error!','Please enter a Username') 
+	elif PW_sign_textbox.value == '':
+		info('Error!','Please enter a Password')
+	elif FN_sign_textbox.value == "":
+		info('Error!','Please enter your First Name')
+	elif SN_sign_textbox.value == "":
+		info('Error!','Please enter your Surname')
+	elif EM_sign_textbox.value == "":
+		info('Error!','Please enter an Email')
+	else:
+		info('Thank you!','You are now signed up')
+		mysqlinsert = ("INSERT INTO CUSTOMER_DETAILS(userName, userPassword,userFirstname, userlastname, email) VALUES ('"+ str(UN_sign_textbox.value) + "','" + str(PW_sign_textbox.value) + "','" + str(FN_sign_textbox.value) + "','" + str(SN_sign_textbox.value) + "','" + str(EM_sign_textbox.value) + "')")
+		execute_sql(database_file, mysqlinsert)
+		Review_S()
+
+
+
+
+def login_user():  
+	global user_LoggedIn 
+	if user_textbox.value == " ":
+		info("Error", "You must enter a valid username")
+		
+	elif PW_textbox.value == " ":
+		info("Error", "You must enter a password")
+	else:
+		usern = user_textbox.value
+		sqlselect = "SELECT * FROM CUSTOMER_DETAILS WHERE userName = '"+usern+"'"
+		rows = query_database(database_file, sqlselect)
+		if len(rows) == 0: ### This checks that the user was found ###
+			info("Error","Error user not registered")
+		else:
+			info("Log in","Success user has been found")
+			user_LoggedIn = rows[0][0]
+			window_L.hide()
+			window_R.show()
+
+#
+#
+#
+#################################
+# build main window             #
+#################################
+app = App(title="Tesco", height = 500)
+text_blank = Text(app, text=" ")
+text_blank = Text(app, text=" Welcome to Tesco ")
+
+
+text_blank = Text(app, text=" ")
+open_button = PushButton(app, text="Sign in", command=open_window_S) 
+open_button = PushButton(app, text="Log in", command=open_window_L) 
+text_blank = Text(app, text=" ")
+painandsuffering = Picture(app, image = 'Tesco.jpg',width=300, height=100)
+#open_button = PushButton(app, text="Leave Review", command=open_window_R) # button on app, main window
+app.bg = "light blue"
+text_blank = Text(app, text=" ")
+
+
+#
+#
+#
+#################################
+# login window             #
+#################################
+window_L = Window(app, title = "Login Window", height=500, width=500)
+
+
+text_blank = Text(window_L, text=" ")
+text_blank = Text(window_L, text=" Welcome to Tesco ")
+text_blank = Text(window_L, text=" ")
+text = Text(window_L, text= "Enter user name")
+user_textbox = TextBox(window_L)
+text_blank = Text(window_L, text=" ")
+text = Text(window_L, text= "Enter user Password")
+PW_textbox = TextBox(window_L)
+#
+text_blank = Text(window_L, text=" ")
+text_blank = Text(window_L, text=" ")
+open_button = PushButton(window_L, text="Log in", command=login_user) 
+back_button = PushButton(window_L, text="back", command=back) 
+window_L.bg = "light blue"
+text_blank = Text(window_L, text=" ")
+window_L.hide()
+
+#################################
+# sign up  window             #
+#################################
+window_S = Window(app, title = "Sign Up Window", height=500, width=500)
+
+
+text_blank = Text(window_S, text=" ")
+text_blank = Text(window_S, text=" Welcome to Tesco ")
+text_blank = Text(window_S, text=" ")
+text = Text(window_S, text= "Enter Username")
+UN_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter User Password")
+PW_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter First name")
+FN_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter Surname")
+SN_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter Email")
+EM_sign_textbox = TextBox(window_S)
+#
+text_blank = Text(window_S, text=" ")
+open_button = PushButton(window_S, text="Sign Up", command=valid) 
+back_button = PushButton(window_S	, text="back", command=back)
+
+window_S.bg = "light blue"
+text_blank = Text(window_S, text=" ")
+window_S.hide()
+
+#################################
+# review window             #
+#################################
+window_R = Window(app, title = "Review Window", height=500, width=500)
+
+text_blank = Text(window_R, text=" ")
+text_blank = Text(window_R, text=" Welcome to Tesco Review ")
+text_blank = Text(window_R, text=" ")
+text = Text(window_R, text= "Enter the subject of your review")
+subject_textbox = TextBox(window_R)
+text_blank = Text(window_R, text=" ")
+text = Text(window_R, text= "Please leave your review")
+review_textbox = TextBox(window_R, multiline = True,width = 30,height=10)
+#
+text_blank = Text(window_R, text=" ")
+text_blank = Text(window_R, text=" ")
+open_button = PushButton(window_R, text="Submit", command=review_submit) 
+back_button = PushButton(window_R, text="back", command=back_review) 
+window_R.bg = "light blue"
+text_blank = Text(window_R, text=" ")
+
+window_R.hide()
+#
+#
+# 
+app.display()
