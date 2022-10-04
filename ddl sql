@@ -1,1 +1,87 @@
-
+from guizero import App, Window, PushButton, Text, CheckBox, ListBox, TextBox, ButtonGroup, Picture, Combo, Box,info  #window is second form
+#
+# https://lawsie.github.io/guizero/app/
+#
+#This is needed for the sql database
+import sqlite3
+from sqlite3 import Error
+#Import SQL
+import os
+import os.path
+#Import datetime
+import datetime
+#
+#
+#Define the DDL SQL to make the tables
+#
+#
+#Tables created in database with the following details below
+sql = """
+CREATE TABLE "CUSTOMER_DETAILS" ( 
+"customerID" INTEGER NOT NULL,
+"userName" TEXT,
+"userPassword" TEXT,
+"userFirstname" TEXT,
+"userlastname" TEXT,
+"email" TEXT, 
+PRIMARY KEY("customerID" AUTOINCREMENT)
+);
+CREATE TABLE "REVIEW_TABLE" (
+"reviewID"  INTEGER NOT NULL,
+"reviewWriteup" TEXT,
+"customerID"  INTEGER,
+PRIMARY KEY("reviewID" AUTOINCREMENT),
+CONSTRAINT "customerID_FK"  FOREIGN KEY("customerID") REFERENCES "CUSTOMER_DETAILS"("customerID")
+);
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjosht','password', 'Josh', 'Tice','Josh.t@gmail.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('useraidanc','pass', 'Aidan', 'Channing', 'Aidan@yahoo.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjackb','passwrd', 'Jack', 'Bruce', 'jack@outlook.com');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname, email) values ('userjoshp','parker', 'Josh', 'Parkinsons', 'joshp@gmail.com');
+insert into REVIEW_TABLE (reviewID, reviewWriteup, customerID) values ('1', 'Josh','1');
+"""
+#
+#Global variables here
+#
+#
+database_file = 'TescoApp.db'
+user_LoggedIn = 1
+#
+#
+#
+#Delete the database, only if it exists
+#
+#
+if os.path.exists(database_file):
+   os.remove(database_file)
+#
+#Connect to the database
+conn = sqlite3.connect(database_file) #My connection is called 'conn'
+#Get a cursor pointing to the database
+cursor = conn.cursor()
+#Create the tables
+cursor.executescript(sql) # creates from DDL above, script more than 1 command
+#Commit to save everything
+conn.commit()
+#Close the connection to the database
+#
+#Queries the database using the database parameter as the database
+#to query and the query parameter as the actual query to issue
+# for SELECT
+#
+def query_database(database, query):
+	Lconn = sqlite3.connect(database)
+	cur = Lconn.cursor()			# use a local cursor
+	cur.execute(query)
+	rows = cur.fetchall()
+	cur.close()
+	return rows
+#
+#
+#Executes the sql statement to INSERT and UPDATE rows
+#
+def execute_sql(database, sql_statement):
+	Lconn = sqlite3.connect(database)
+	cur = Lconn.cursor()
+	cur.execute(sql_statement)
+	Lconn.commit()
+	return cur.lastrowid
