@@ -1,0 +1,104 @@
+#################################
+# build main window             #
+#################################
+app = App(title="Virgin Atlantic", height = 500)
+text_blank = Text(app, text=" ")
+text_blank = Text(app, text=" Welcome to Virgin Atlantic ")
+text_blank = Text(app, text=" ")
+open_button = PushButton(app, text="Sign in", command=open_window_S) 
+open_button = PushButton(app, text="Log in", command=open_window_L) 
+text_blank = Text(app, text=" ")
+image = Picture(app,image = 'VAlogo.jpg' ,  width=300, height=100)
+#open_button = PushButton(app, text="Leave Review", command=open_window_R) # button on app, main window
+app.bg = "salmon"
+text_blank = Text(app, text=" ")
+#
+#
+#
+#################################
+# login window             #
+#################################
+window_L = Window(app, title = "Login Window", height=500, width=500)
+
+
+text_blank = Text(window_L, text=" ")
+text_blank = Text(window_L, text=" Welcome to Virgin Atlantic ")
+text_blank = Text(window_L, text=" ")
+text = Text(window_L, text= "Enter user name")
+user_textbox = TextBox(window_L)
+text_blank = Text(window_L, text=" ")
+text = Text(window_L, text= "Enter user Password")    
+PW_textbox = TextBox(window_L)
+text_blank = Text(window_L, text=" ")
+#
+open_button = PushButton(window_L, text="Log in", command=login_user) 
+back_button = PushButton(window_L, text="back", command=back)
+text_blank = Text(window_L, text=" ")
+image = Picture(window_L,image = 'VAlogo.jpg' ,  width=300, height=100) #image for login page 
+window_L.bg = "salmon"
+text_blank = Text(window_L, text=" ")
+window_L.hide()
+
+#################################
+# sign up  window             #
+#################################
+window_S = Window(app, title = "Sign Up Window", height=500, width=500)
+
+
+text_blank = Text(window_S, text=" ")
+text_blank = Text(window_S, text=" Welcome to Virgin Atlantic ")
+text_blank = Text(window_S, text=" ")
+text = Text(window_S, text= "Enter Username ")
+UN_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter Password")
+PW_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter First Name")
+FN_sign_textbox = TextBox(window_S)
+text = Text(window_S, text= "Enter Surname")
+SN_sign_textbox = TextBox(window_S)
+text_blank = Text(window_S, text=" ")
+
+#
+
+open_button = PushButton(window_S, text="Sign Up", command=valid) 
+back_button = PushButton(window_S    , text="back", command=back)
+text_blank = Text(window_S, text=" ")
+image = Picture(window_S ,image = 'VAlogo.jpg' ,  width=300, height=100)
+window_S.bg = "salmon"
+text_blank = Text(window_S, text=" ")
+window_S.hide()
+
+#################################
+# booking window             #
+#################################
+window_R = Window(app, title = "Book A Flight", height=500, width=500)
+
+text_blank = Text(window_R, text=" ")
+text_blank = Text(window_R, text=" Welcome to Virgin Atlantic Booking ")
+text_blank = Text(window_R, text=" ")
+text = Text(window_R, text= "Enter Your Arrival Airport")
+Arrival_combobox = Combo(window_R, AirportList,  selected = " Please select" , width = 20,height=1)
+text_blank = Text(window_R, text=" ")
+text = Text(window_R, text= "Enter Your Departure Airport")
+Departure_combobox = Combo(window_R, AirportList , selected = " Please select", width = 20,height=1)
+
+#
+seatClass = ButtonGroup(window_R, options=["First Class", "Econemy", "Buisness"])
+#
+text = Text(window_R, text= "Date Of Departure as DD/MM/YYYY")
+Date_Flight = TextBox(window_R, width = 15)
+open_button = PushButton(window_R, text="Submit", command=book_submit) 
+back_button = PushButton(window_R, text="back", command=back_review) 
+
+text_blank = Text(window_R, text=" ")
+image = Picture(window_R ,image = 'VAlogo.jpg' ,  width=300, height=100)
+window_R.bg = "salmon"
+text_blank = Text(window_R, text=" ")
+
+window_R.hide()
+#
+#
+# 
+
+
+app.display()
