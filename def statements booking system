@@ -1,0 +1,75 @@
+def book_submit():
+    #adds a review to the data base
+    if user_textbox.value == " ":
+        info("Error", "Flight could not be booked")
+             
+    else:
+        ###validate date
+        GoodDate = validateDate(Date_Flight.value)
+        if GoodDate == True:
+            info("Log in","Flight has been booked")
+            mysqlinsert = ("INSERT INTO BOOKING_TABLE(Departure_textbox, Arrival_textbox,Date_Flight, userID) values ('" + str(Departure_combobox.value) +"','"+ str(Arrival_combobox.value) +"','"+ str(Date_Flight.value) +"','" + str(user_LoggedIn)+ "')")
+            execute_sql(database_file, mysqlinsert)
+            Review_S()
+        else:
+            info("Log In", "Flight cannot be booked")
+
+def validateDate(date_text):
+    
+    try:
+        #
+        return bool(datetime.strptime(date_text, '%d/%m/%Y'))    #formats the date to DD/MM/YYYY
+    except:
+        info("Error", "Flight could not be booked as date was invalid")    #Error if the date is invalid
+        return False
+
+
+
+def sign_in():
+    #signs in the user
+    if user_textbox.value == " ":
+        info("Error", "couldnt sign up")
+    else:
+        info("Log in","user created")
+
+
+def valid():
+    #this procedure checks if the data is valid
+    if UN_sign_textbox.value == "":
+        info('Error!','Please enter a Username') 
+    elif PW_sign_textbox.value == '':
+        info('Error!','Please enter a Password')
+    elif FN_sign_textbox.value == "":
+        info('Error!','Please enter your First Name')
+    elif SN_sign_textbox.value == "":
+        info('Error!','Please enter your Surname')
+    else:
+        info('Thank you!','You are now signed up')
+        mysqlinsert = ("INSERT INTO USER_DETAILS(firstName, lastName,Password, Username) VALUES ('"+ str(FN_sign_textbox.value) + "','" + str(SN_sign_textbox.value) + "','" + str(PW_sign_textbox.value) + "','" + str(UN_sign_textbox.value) + "')")
+        execute_sql(database_file, mysqlinsert)
+        Review_S()
+
+
+
+
+def login_user():  
+    #this procedure checks the database and logs in the user 
+    global user_LoggedIn 
+    if user_textbox.value == " ":
+        info("Error", "You must enter a valid username")
+        
+    elif PW_textbox.value == " ":
+        info("Error", "You must enter a password")
+    elif "'" in PW_textbox.value  or "'" in user_textbox.value:
+        info("Error", "sql injection failed")
+    else:
+        usern = user_textbox.value
+        sqlselect = "SELECT * FROM USER_DETAILS WHERE userName = '"+usern+"'"
+        rows = query_database(database_file, sqlselect)
+        if len(rows) == 0: ### This checks that the user was found ###
+            info("Error","Error user not registered")
+        else:
+            info("Log in","Success user has been found")
+            user_LoggedIn = rows[0][0]
+            window_L.hide()
+            window_R.show()
