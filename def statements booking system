@@ -4,7 +4,7 @@ def book_submit():
         info("Error", "Flight could not be booked")
              
     else:
-        ###validate date
+        #validate date
         GoodDate = validateDate(Date_Flight.value)
         if GoodDate == True:
             info("Log in","Flight has been booked")
