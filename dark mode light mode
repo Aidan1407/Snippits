@@ -1,0 +1,28 @@
+def lightmodeWINDOW():
+    app.bg = '#d7d7d7'
+
+
+def darkmodeWINDOW():
+    app.bg = '#696969'
+
+def setback():
+    window_SET.hide()
+    workout_window.hide()
+    nutrition_window.hide()
+    FitnessWindow.show()
+
+
+
+
+window_SET = Window(app, title = "Settings", height= 150, width =250)
+text_blank = Text(window_SET, text=" ")
+dark_mode = PushButton(window_SET, text= "Dark Mode",command = darkmodeWINDOW , width =20,height = 1)
+light_mode = PushButton(window_SET, text= "Light Mode",command = lightmodeWINDOW ,width =20,height = 1)
+text_blank = Text(window_SET, text=" ")
+back_button = PushButton(window_SET, text="Back",command = setback)
+
+picture = Picture(window_SET, image = 'gigareynolds.png',width = 1960, align ='bottom')
+
+window_SET.bg = "#c7c7c7"
+
+window_SET.hide()
