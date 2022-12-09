@@ -1,0 +1,15 @@
+def analysegraph():
+    global user_LoggedIn
+    conn= sqlite3.connect ("Fitness_App2.db")
+    c = conn.cursor()
+   # c.execute("SELECT activity_date, activity_cals from LOG_TABLE where userID="+ str(user_LoggedIn))
+    c.execute("SELECT activity_date, activity_cals from LOG_TABLE where userID="+ str(user_LoggedIn))
+    df=pd.DataFrame(c.fetchall(), columns = ["Date", "Calories"])
+    print(df)
+    plt.bar(df['Date'],df['Calories'])
+    plt.xlabel('Date of session')
+    plt.ylabel('Calories Burnt')
+    plt.title('analyse progress')
+    plt.savefig("calories.png")
+    plt.show()
+    plt.close()
