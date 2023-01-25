@@ -1,0 +1,67 @@
+from guizero import App, Window, PushButton, Text, CheckBox, ListBox, TextBox, ButtonGroup, Picture, Combo, Box,info  #window is second form
+#
+# https://lawsie.github.io/guizero/app/
+#
+#This is needed for the sql database
+import sqlite3
+from sqlite3 import Error
+#Import SQL
+import os
+import os.path
+#Import datetime
+import datetime
+#
+#
+#Define the DDL SQL to make the tables
+#
+#
+#Tables created in database with the following details below
+sql = """
+CREATE TABLE "CUSTOMER_DETAILS" ( 
+"customerID" INTEGER NOT NULL,
+"userName" TEXT,
+"userPassword" TEXT,
+"userFirstname" TEXT,
+"userlastname" TEXT, 
+PRIMARY KEY("customerID" AUTOINCREMENT)
+);
+CREATE TABLE "BOOKING_TABLE" (          
+"bookingID"  INTEGER NOT NULL,
+"Performance" TEXT,
+"PerformanceDate"  DATE,
+"PerformanceTime"  TEXT,
+"customerID" INTEGER,
+PRIMARY KEY("bookingID" AUTOINCREMENT),
+CONSTRAINT "customerID_FK"  FOREIGN KEY("customerID") REFERENCES "CUSTOMER_DETAILS"("customerID")
+);
+CREATE TABLE "SEAT_TABLE" (
+"seatID"  INTEGER NOT NULL,     
+"SeatName" TEXT,
+"SeatCost" REAL,
+"bookingID"  INTEGER,
+PRIMARY KEY("bookingID" AUTOINCREMENT),
+CONSTRAINT "bookingID_FK"  FOREIGN KEY("bookingID") REFERENCES "BOOKING_DETAILS"("bookingID")
+);
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname) values ('userjosht','password', 'Josh', 'Tice');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname) values ('useraidanc','pass', 'Aidan', 'Channing');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname) values ('userjackb','passwrd', 'Jack', 'Bruce');
+insert into CUSTOMER_DETAILS (userName, userPassword, userFirstName, userlastname) values ('userjoshp','parker', 'Josh', 'Parkinsons');
+insert into BOOKING_TABLE (bookingID, Performance, PerformanceDate, PerformanceTime, customerID) values ('1', 'Dance','17/01/23','20:00','1');
+insert into SEAT_TABLE (seatID, SeatName, SeatCost,bookingID) values ('1','A2','50.00','1');
+"""
+
+
+database_file = 'seat.db'
+#
+if os.path.exists(database_file):
+   os.remove(database_file)
+#
+#Connect to the database
+conn = sqlite3.connect(database_file) #My connection is called 'conn'
+#Get a cursor pointing to the database
+cursor = conn.cursor()
+#Create the tables
+cursor.executescript(sql) # creates from DDL above, script more than 1 command
+#Commit to save everything
+conn.commit()
+#Close the connection to the database
