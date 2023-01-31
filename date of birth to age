@@ -1,0 +1,10 @@
+from datetime import datetime
+
+def dob_to_age(day,month,year):
+
+    start_date = datetime(year,month,day)
+    end_date = datetime.now()
+    difference  = end_date - start_date
+    return ((difference.days + difference.seconds/86400)/365.2425) 
+
+print(dob_to_age(int(input()),int(input()),int(input())))
