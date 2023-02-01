@@ -1,0 +1,8 @@
+
+def opengym():
+    #a social feature linking people to a gym
+    URL = 'https://horizonlc.com/havant-waterlooville-gyms/' 
+    webbrowser.open(URL, autoraise = True)
+    
+    
+command=opengym
