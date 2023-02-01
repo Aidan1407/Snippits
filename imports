@@ -1,0 +1,17 @@
+from guizero import App, Window, PushButton, Text, CheckBox, ListBox, TextBox, ButtonGroup, Picture, Combo, Box,info  #window is second form
+#
+# https://lawsie.github.io/guizero/app/
+import webbrowser
+#This is needed for the sql database
+import sqlite3
+from sqlite3 import Error
+import pandas as pd
+#Import SQL
+import matplotlib.pyplot as plt
+import os
+import os.path
+#Import datetime
+import datetime
+#
+#
+#Define the DDL SQL to make the tables
