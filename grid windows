@@ -1,0 +1,28 @@
+
+###################################
+###        fitness window       ###
+###################################
+
+FitnessWindow = Window(app, title = "Fitness Window", height= 750, width =1250)
+FitnessWindowBox =Box(FitnessWindow, layout = "grid")
+picture = Picture(FitnessWindowBox, image = 'Toka.png',width=150, height=75, grid = [0,0])
+workout_button = PushButton(FitnessWindowBox,text="Workout",command = workout_adv ,width = 32 ,height=3, grid = [0,1]) 
+Nutrition_button = PushButton(FitnessWindowBox, text="Nutrition",command = nutrition_adv ,width = 32 ,height=3, grid = [2,1]) 
+Leaderboard_button = PushButton(FitnessWindowBox, text="Leaderboard",command = leaderboard, width = 32 ,height=3, grid = [3,1])      
+premium_button = PushButton(FitnessWindowBox, text="Unlock Paid Features",command = analysegraph,width = 32 ,height=3, grid = [4,1] ) 
+back_button = PushButton(FitnessWindowBox, text="Settings",width = 32 ,height=3,command = settings, grid = [5,1]) 
+back_button = PushButton(FitnessWindowBox, text="Log Out",width = 32 ,height=3, command=back , grid = [5,0]) 
+gym_button = PushButton(FitnessWindowBox, text="Book A Gym",width = 32 ,height=3, command=opengym , grid = [4,0])
+text_blank = Text(FitnessWindow, text="   ", align = 'left')
+text_blank = Text(FitnessWindow, text="   ", align = 'left')
+
+picture = Picture(FitnessWindow, image = 'CardioIMAGE.png',width=500, height=250, align = 'right')
+
+
+
+picture = Picture(FitnessWindow, image = 'WorkOutChris.jpg',width=500, height=250, align = 'left')
+picture = Picture(FitnessWindow, image = 'gopremium.png',width=250, height=250, align = 'bottom')
+text_blank = Text(FitnessWindow, text="   ", align = 'right')
+text_blank = Text(FitnessWindow, text="   ", align = 'right')
+FitnessWindow.bg = "#c7c7c7"
+FitnessWindow.hide()
